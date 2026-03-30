@@ -1,21 +1,17 @@
-# ──────────────────────────────────────────────
-# Stage 1 – Build
-# ─────────────────────────────────────────────
+# -------Build Stage------
 
 FROM node:20-alpine AS build
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json package-lock.json* ./
 
 RUN npm ci --only=production && npm cache clean --force
 
 
-# ──────────────────────────────────────────────
-# Stage 2 – Production (Reduce Image size)
-# ──────────────────────────────────────────────
+# ─────Production stage---------------
 
-FROM node:20-alpine 
+FROM node:20-alpine AS production 
 
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
@@ -27,9 +23,12 @@ COPY --from=build /app/node_modules ./node_modules
 
 COPY src ./src/
 
+RUN chown -R appuser:appgroup /app
+
 USER appuser
 
 EXPOSE 5000
 
-ENTRYPOINT ["dumb-init","--"]
-CMD ["node","src/index.js"]
+ENTRYPOINT ["dumb-init", "--"]
+
+CMD ["node", "src/index.js"]
