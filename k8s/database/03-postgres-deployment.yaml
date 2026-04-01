@@ -23,6 +23,13 @@ spec:
         app.kubernetes.io/part-of: jerney
         app.kubernetes.io/component: database
     spec:
+
+      automountServiceAccountToken: false
+      tolerations:
+        - key: "kapenter.sh/disrupted"
+          operator: "Exists"
+          effect: "NoSchedule"
+
       containers:
         - name: postgres-db
           image: postgres:16-alpine
@@ -47,3 +54,20 @@ spec:
             - name: db-storage
               persistentVolumeClaim:
                 claimName: jerney-db-pvc
+
+          securityContext:
+            allowPrivilegesEscalations: false
+            readOnlyRootFileSystem: false 
+            runASNonRoot: false
+            livenessProbe:
+              exec:
+                command: ["pg_isReady", "-U", "jerney_user", "-d", "jerney-db"]
+              initialDelaySeconds: 15
+              periodSeconds: 10
+              timeoutSeconds: 5
+            readinessProbe:
+              exec:
+                command: ["pg_isready", "-U", "jerney_user", "-d", "jerney_db"]
+              initialDelaySeconds: 5
+              periodSeconds: 5
+              timeoutSeconds: 3   
