@@ -22,8 +22,8 @@ spec:
         app.kubernetes.io/name: jerney-db
         app.kubernetes.io/part-of: jerney
         app.kubernetes.io/component: database
-    spec:
 
+    spec:
       automountServiceAccountToken: false
       tolerations:
         - key: "kapenter.sh/disrupted"
@@ -38,8 +38,8 @@ spec:
               protocol: TCP
           volumeMounts:
             - name: db-storage
-              path: /var/lib/postgresql/data
-              subpath: pgdata
+              mountPath: /var/lib/postgresql/data
+              subPath: pgdata
           envFrom:
             - secretRef:
                 name: jerney-db-secret
@@ -50,24 +50,23 @@ spec:
             limits:
               cpu: 500m
               memory: 512Mi
-          volumes:
-            - name: db-storage
-              persistentVolumeClaim:
-                claimName: jerney-db-pvc
-
           securityContext:
-            allowPrivilegesEscalations: false
-            readOnlyRootFileSystem: false 
-            runASNonRoot: false
-            livenessProbe:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false 
+            runAsNonRoot: false
+          livenessProbe:
               exec:
                 command: ["pg_isReady", "-U", "jerney_user", "-d", "jerney-db"]
               initialDelaySeconds: 15
               periodSeconds: 10
               timeoutSeconds: 5
-            readinessProbe:
+          readinessProbe:
               exec:
                 command: ["pg_isready", "-U", "jerney_user", "-d", "jerney_db"]
               initialDelaySeconds: 5
               periodSeconds: 5
-              timeoutSeconds: 3   
+              timeoutSeconds: 3
+      volumes:
+        - name: db-storage
+          persistentVolumeClaim:
+            claimName: jerney-db-pvc
