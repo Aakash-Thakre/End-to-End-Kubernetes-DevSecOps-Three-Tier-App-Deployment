@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: jerney-db-svc
+  namespace: jerney
+  labels:
+    apps.kubernetes.io/name: jerney-db
+    app.kubernetes.io/part-of: jerney
+    app.kubernetes.io/component: database
+spec: 
+  selector:
+      app.kubernetes.io/name: jerney-db
+  type: ClusterIP
+  ports:
+    - port: 5432
+      targetPort: 5432
+      protocol: TCP
+
