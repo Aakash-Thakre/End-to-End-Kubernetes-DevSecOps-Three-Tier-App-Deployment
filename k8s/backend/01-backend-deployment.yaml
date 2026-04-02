@@ -22,7 +22,76 @@ spec:
         app.kubernetes.io/name: jerney-backend
         app.kubernetes.io/part-of: jerney
         app.kubernetes.io/component: backend
+
     spec:
+      automountServiceAccountToken: false
+      tolerations:
+        - key: "karpenter.sh/disrupted"
+          operator: "Exists"
+          effect: "NoSchedule"
+
       containers:
         - name: jerney-backend
-          image: 
+          image: aakashthakre/jerney-backend:1.0
+          ports:
+            containerPort: 5000
+            protocol: TCP
+          env:
+            - name: "DB_HOST"
+              value: "jerney-db"
+            - name: PORT
+              value: "5000"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USER
+              valueFrom:
+                secreKeyRef:
+                  - name: jerney-db-secret
+                    key: POSTGRES_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                   - name: jerney-db-secret
+                     key: POSTGRES_PASSWORD
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  - name: jerney-db-secret
+                    key: POSTGRES_DB
+          resources:
+            requests:
+              cpu: 100M
+              memory: 128Mi
+            limits:
+              cpu: 300M
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 100
+            capabilities:
+              drop:
+                - ALL
+
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 5000
+            intialDelaySeconds: 10s
+            periodSeconds: 15s
+            timeoutSeconds: 5
+
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+
+
+
+
+
+
+
