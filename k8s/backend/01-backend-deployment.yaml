@@ -11,7 +11,7 @@ metadata:
 spec:
   replicas: 1
   strategy:
-    type: Recreate
+    type: RollingUpdate
   selector:
     matchLabels:
       app.kubernetes.io/name: jerney-backend
@@ -75,15 +75,15 @@ spec:
                    key: POSTGRES_DB
           resources:
             requests:
-              cpu: 100M
+              cpu: 100m
               memory: 128Mi
             limits:
-              cpu: 300M
+              cpu: 300m
               memory: 256Mi
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
-            runAsUser: 100
+            runAsUser: 1000
             capabilities:
               drop:
                 - ALL
