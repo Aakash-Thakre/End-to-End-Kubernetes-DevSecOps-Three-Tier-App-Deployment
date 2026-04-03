@@ -9,9 +9,7 @@ metadata:
     app.kubernetes.io/component: backend
 
 spec:
-  replicas: 1
-  strategy:
-    type: RollingUpdate
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/name: jerney-backend
