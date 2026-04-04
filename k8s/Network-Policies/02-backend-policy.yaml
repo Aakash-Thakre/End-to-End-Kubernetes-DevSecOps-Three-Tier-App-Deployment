@@ -6,7 +6,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: jerney-frontend
+      app.kubernetes.io/name: jerney-backend
   policyTypes:
     - Ingress
   ingress:
