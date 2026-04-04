@@ -4,7 +4,7 @@ metadata:
   name: jerney-db-pvc
   namespace: jerney
   labels:
-    app.kuberneters.io/part-of: jerney
+    app.kubernetes.io/part-of: jerney
     app.kubernetes.io/component: database
 spec:
   accessModes:
