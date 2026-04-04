@@ -56,7 +56,7 @@ spec:
             runAsNonRoot: false
           livenessProbe:
               exec:
-                command: ["pg_isReady", "-U", "jerney_user", "-d", "jerney-db"]
+                command: ["pg_isready", "-U", "jerney_user", "-d", "jerney-db"]
               initialDelaySeconds: 15
               periodSeconds: 10
               timeoutSeconds: 5
