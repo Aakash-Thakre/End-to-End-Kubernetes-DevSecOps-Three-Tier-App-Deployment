@@ -36,6 +36,7 @@ function Home() {
       <div className="home-header">
         <h1>Welcome to Jerney by Argocd 🛤️</h1>
         <p>A blog platform for the main characters. Share your thoughts, vibes, and hot takes.</p>
+        <p>Checking database is consistent after a new commit.</p>
         <div className="vibe-tags">
           <span className="vibe-tag">✨ no cap content</span>
           <span className="vibe-tag">🔥 hot takes</span>
