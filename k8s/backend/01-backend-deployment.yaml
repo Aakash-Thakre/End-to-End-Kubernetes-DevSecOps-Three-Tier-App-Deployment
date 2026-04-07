@@ -45,7 +45,7 @@ spec:
 
       containers:
         - name: jerney-backend
-          image: ghcr.io/Aakash-Thakre/End-to-End-Kubernetes-DevSecOps-Three-Tier-App-Deployment/jerney-backend:4d768ca
+          image: ghcr.io/Aakash-Thakre/End-to-End-Kubernetes-DevSecOps-Three-Tier-App-Deployment/jerney-backend:6f0ff26
           ports:
             - containerPort: 5000
               protocol: TCP
