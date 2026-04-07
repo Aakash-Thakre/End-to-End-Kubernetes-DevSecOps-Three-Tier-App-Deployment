@@ -238,10 +238,10 @@ jobs:
           IMAGE_TAG=${{ steps.sha.outputs.short }}
       
           echo "Updating Backend Image..."
-          sed -i "s|image:.*jerney-backend.*|image: ${BACKEND_IMAGE}:${IMAGE_TAG}|" k8s/backend/01-deployment.yaml
+          sed -i "s|image:.*jerney-backend.*|image: ${BACKEND_IMAGE}:${IMAGE_TAG}|" k8s/backend/01-backend-deployment.yaml
       
           echo "Updating Frontend Image..."
-          sed -i "s|image:.*jerney-frontend.*|image: ${FRONTEND_IMAGE}:${IMAGE_TAG}|" k8s/frontend/01-deployment.yaml
+          sed -i "s|image:.*jerney-frontend.*|image: ${FRONTEND_IMAGE}:${IMAGE_TAG}|" k8s/frontend/01-frontend-deployment.yaml
       
           echo "✅ Updated images to tag: ${IMAGE_TAG}"
       
