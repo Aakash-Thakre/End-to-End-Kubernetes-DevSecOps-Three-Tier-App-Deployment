@@ -19,6 +19,7 @@ permissions:
 
 env:
   DOCKER_REGISTRY: ghcr.io
+  REPO: ${{ github.repository }} 
   BACKEND_IMAGE: ghcr.io/${{ github.repository }}/jerney-backend
   FRONTEND_IMAGE: ghcr.io/${{ github.repository }}/jerney-frontend
 
@@ -232,19 +233,19 @@ jobs:
       - name: Get short SHA
         id: sha
         run: echo "short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
+        
       - name: Update K8s manifests with new image tags
         run: |
           IMAGE_TAG=${{ steps.sha.outputs.short }}
-      
-          echo "Updating Backend Image..."
-          sed -i "s|image:.*jerney-backend.*|image: ${BACKEND_IMAGE}:${IMAGE_TAG}|" k8s/backend/01-backend-deployment.yaml
-      
-          echo "Updating Frontend Image..."
-          sed -i "s|image:.*jerney-frontend.*|image: ${FRONTEND_IMAGE}:${IMAGE_TAG}|" k8s/frontend/01-frontend-deployment.yaml
+        
+          BACKEND_IMAGE=$(echo "${{ env.BACKEND_IMAGE }}" | tr '[:upper:]' '[:lower:]')
+          FRONTEND_IMAGE=$(echo "${{ env.FRONTEND_IMAGE }}" | tr '[:upper:]' '[:lower:]')
 
-      
-          echo "✅ Updated images to tag: ${IMAGE_TAG}"
+          sed -i "s|image:.*jerney-backend.*|image: ${BACKEND_IMAGE}:${IMAGE_TAG}|" \
+            k8s/backend/01-backend-deployment.yaml
+
+          sed -i "s|image:.*jerney-frontend.*|image: ${FRONTEND_IMAGE}:${IMAGE_TAG}|" \
+            k8s/frontend/01-frontend-deployment.yaml
       
           echo "Backend:"
           grep "image:" k8s/backend/01-backend-deployment.yaml
