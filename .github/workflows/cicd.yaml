@@ -242,6 +242,7 @@ jobs:
       
           echo "Updating Frontend Image..."
           sed -i "s|image:.*jerney-frontend.*|image: ${FRONTEND_IMAGE}:${IMAGE_TAG}|" k8s/frontend/01-frontend-deployment.yaml
+
       
           echo "✅ Updated images to tag: ${IMAGE_TAG}"
       
