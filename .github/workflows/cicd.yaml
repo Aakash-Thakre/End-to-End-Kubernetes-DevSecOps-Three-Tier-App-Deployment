@@ -247,10 +247,10 @@ jobs:
           echo "✅ Updated images to tag: ${IMAGE_TAG}"
       
           echo "Backend:"
-          grep "image:" k8s/backend/01-deployment.yaml
+          grep "image:" k8s/backend/01-backend-deployment.yaml
       
           echo "Frontend:"
-          grep "image:" k8s/frontend/01-deployment.yaml
+          grep "image:" k8s/frontend/01-frontend-deployment.yaml
 
       - name: Commit and push manifest update
         run: |
