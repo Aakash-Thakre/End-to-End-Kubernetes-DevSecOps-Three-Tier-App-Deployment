@@ -8,11 +8,10 @@ metadata:
     app.kubernetes.io/part-of: jerney
     app.kubernetes.io/component: frontend
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app.kubernetes.io/name: jerney-frontend
   ports:
     - port: 80
       targetPort: 8080
-      nodePort: 32069
       protocol: TCP
