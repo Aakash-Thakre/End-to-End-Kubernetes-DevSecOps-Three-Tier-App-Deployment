@@ -9,7 +9,7 @@
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI%2FCD-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
 
-**A production-grade DevSecOps project deploying the Jerney Blog Platform on AWS EKS using Terraform, Docker, Kubernetes, Helm, ArgoCD, Prometheneus, Grafaana, GitHub Actions**  
+**A production-grade DevSecOps project deploying the Jerney Blog Platform on AWS EKS using Terraform, Docker, Kubernetes, Helm, ArgoCD, Prometheus, Grafana, GitHub Actions**  
 
 </div>
 
