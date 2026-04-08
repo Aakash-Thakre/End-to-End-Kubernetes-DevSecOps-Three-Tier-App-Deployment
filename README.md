@@ -21,12 +21,11 @@
 
 ## 📖 Overview
 
-This project demonstrates a complete **DevSecOps lifecycle** for the **Jerney Blog Platform** — a three-tier web application. It covers containerizing with Docker, provisioning cloud infrastructure with Terraform, deploying on Kubernetes with production-grade manifests, and automating delivery through GitHub Actions. The platform leverages ArgoCD to implement a GitOps delivery model, enabling automated synchronization and self-healing capabilities that keep the cluster state in perfect alignment with the Git repository. To maintain full-stack visibility, an observability suite featuring Prometheus and Grafana is integrated, providing real-time monitoring, performance dashboards, and proactive alerting to ensure the platform's reliability and security posture.
+This project demonstrates a complete **DevSecOps lifecycle** for the **Jerney Blog Platform** — a three-tier web application. It covers containerizing with Docker, provisioning cloud infrastructure with Terraform, deploying on Kubernetes with production-grade manifests, and automating delivery through GitHub Actions. 
 
-Security is embedded at every layer — non-root containers, read-only filesystems, NetworkPolicies, encrypted EBS storage, and least-privilege IAM.
+The platform leverages ArgoCD to implement a GitOps delivery model, enabling automated synchronization and self-healing capabilities that keep the cluster state in perfect alignment with the Git repository. To maintain full-stack visibility, an observability suite featuring Prometheus and Grafana is integrated, providing real-time monitoring, performance dashboards, and proactive alerting to ensure the platform's reliability and security posture.
 
-> Configured Network policies to ensure no direct access to Backend or Database from outside the cluster.
-
+Security is embedded at every layer — non-root containers, read-only filesystems, NetworkPolicies, encrypted EBS storage, and least-privilege IAM. 
 ---
 
 ## 🛠 Tech Stack
