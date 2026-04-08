@@ -13,7 +13,7 @@
 Security-first. Infrastructure as Code. Fully automated CI/CD.
 </div>
 
-![Three-Tier Banner](assets/Three-Tier-DevSecOps(2).gif)
+![Three-Tier Banner](assets/Three-Tier-DevSecOps.gif)
 
 ---
 
