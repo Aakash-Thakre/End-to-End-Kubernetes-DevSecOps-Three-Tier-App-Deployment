@@ -26,7 +26,7 @@ spec:
           effect: "NoSchedule"
       containers:
         - name: jerney-frontend
-          image: ghcr.io/aakash-thakre/end-to-end-kubernetes-devsecops-three-tier-app-deployment/jerney-frontend:ef98a5e
+          image: ghcr.io/aakash-thakre/end-to-end-kubernetes-devsecops-three-tier-app-deployment/jerney-frontend:e2065f5
           ports:
             - containerPort: 8080
               protocol: TCP
