@@ -10,7 +10,10 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
 
 **A production-grade DevSecOps project deploying the Jerney Blog Platform on AWS EKS using Terraform, Docker, Kubernetes, Helm, ArgoCD, Prometheneus, Grafaana, GitHub Actions**  
+
 </div>
+
+## ⚙️ CI/CD Pipeline
 
 ![Three-Tier Banner](assets/Three-Tier-DevSecOps.gif)
 
@@ -19,12 +22,11 @@
 ## 📋 Table of Contents
 
 - [Overview](#-overview)
-- [Architecture](#-architecture)
+- [CI/CD Pipeline](#-cicd-pipeline)
 - [Tech Stack](#-tech-stack)
 - [Infrastructure — Terraform](#-infrastructure--terraform)
 - [Dockerization](#-dockerization)
 - [Security](#-security)
-- [CI/CD Pipeline](#-cicd-pipeline)
 - [Prerequisites](#-prerequisites)
 
 ---
@@ -36,64 +38,6 @@ This project demonstrates a complete **DevSecOps lifecycle** for the **Jerney Bl
 Security is embedded at every layer — non-root containers, read-only filesystems, NetworkPolicies, encrypted EBS storage, and least-privilege IAM.
 
 ---
-
-## ⚙️ CI/CD Pipeline
-
-GitHub Actions automates build → scan → push → deploy on every push to `main`.
-
-```
-Push to main
-     │
-     ▼
-┌──────────┐   ┌──────────────┐   ┌─────────────┐   ┌───────────┐
-│ Build &  │──►│    Docker    │──►│   Trivy     │──►│ Deploy to │
-│  Lint    │   │  Build+Push  │   │ Image Scan  │   │    EKS    │
-└──────────┘   └──────────────┘   └─────────────┘   └───────────┘
-```
-
-## 🏗 Architecture
-
-```
-                    ┌──────────────────────────────────────────────────┐
-                    │                   AWS Cloud                      │
-                    │                                                  │
-  User Browser      │  ┌──────────────────────────────────────────┐   │
-       │            │  │           AWS EKS Cluster (v1.32)        │   │
-       ▼            │  │                                          │   │
-  ┌─────────┐       │  │  ┌─────────┐     ┌──────────────────┐   │   │
-  │ Internet│──────►│  │  │   ALB   │────►│ jerney Namespace │   │   │
-  └─────────┘       │  │  │ Ingress │     │                  │   │   │
-                    │  │  └─────────┘     │  ┌────────────┐  │   │   │
-                    │  │                  │  │  Frontend  │  │   │   │
-                    │  │                  │  │ React+Nginx│  │   │   │
-                    │  │                  │  │  x2 Pods   │  │   │   │
-                    │  │                  │  └─────┬──────┘  │   │   │
-                    │  │                  │        │         │   │   │
-                    │  │                  │  ┌─────▼──────┐  │   │   │
-                    │  │                  │  │  Backend   │  │   │   │
-                    │  │                  │  │ Node.js +  │  │   │   │
-                    │  │                  │  │  Express   │  │   │   │
-                    │  │                  │  │  x2 Pods   │  │   │   │
-                    │  │                  │  └─────┬──────┘  │   │   │
-                    │  │                  │        │         │   │   │
-                    │  │                  │  ┌─────▼──────┐  │   │   │
-                    │  │                  │  │  Database  │  │   │   │
-                    │  │                  │  │ PostgreSQL │  │   │   │
-                    │  │                  │  │ 16-alpine  │  │   │   │
-                    │  │                  │  └─────┬──────┘  │   │   │
-                    │  │                  │        │         │   │   │
-                    │  │                  │  ┌─────▼──────┐  │   │   │
-                    │  │                  │  │  EBS gp3   │  │   │   │
-                    │  │                  │  │ Encrypted  │  │   │   │
-                    │  │                  │  │  10Gi PVC  │  │   │   │
-                    │  │                  │  └────────────┘  │   │   │
-                    │  │                  └──────────────────┘   │   │
-                    │  └──────────────────────────────────────────┘   │
-                    │  VPC (10.0.0.0/16)                               │
-                    │  ├── Public Subnets  → ALB, NAT Gateway          │
-                    │  └── Private Subnets → EKS Nodes                 │
-                    └──────────────────────────────────────────────────┘
-```
 
 ### Network Policy Flow
 
