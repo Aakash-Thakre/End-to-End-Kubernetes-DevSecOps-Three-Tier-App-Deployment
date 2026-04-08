@@ -21,14 +21,10 @@ Security-first. Infrastructure as Code. Fully automated CI/CD.
 - [Overview](#-overview)
 - [Architecture](#-architecture)
 - [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
-- [Application](#-application)
 - [Infrastructure — Terraform](#-infrastructure--terraform)
 - [Dockerization](#-dockerization)
-- [Kubernetes Manifests](#-kubernetes-manifests)
 - [Security](#-security)
 - [CI/CD Pipeline](#-cicd-pipeline)
-- [Local Development](#-local-development)
 - [Prerequisites](#-prerequisites)
 
 ---
@@ -40,6 +36,20 @@ This project demonstrates a complete **DevSecOps lifecycle** for the **Jerney Bl
 Security is embedded at every layer — non-root containers, read-only filesystems, NetworkPolicies, encrypted EBS storage, and least-privilege IAM.
 
 ---
+
+## ⚙️ CI/CD Pipeline
+
+GitHub Actions automates build → scan → push → deploy on every push to `main`.
+
+```
+Push to main
+     │
+     ▼
+┌──────────┐   ┌──────────────┐   ┌─────────────┐   ┌───────────┐
+│ Build &  │──►│    Docker    │──►│   Trivy     │──►│ Deploy to │
+│  Lint    │   │  Build+Push  │   │ Image Scan  │   │    EKS    │
+└──────────┘   └──────────────┘   └─────────────┘   └───────────┘
+```
 
 ## 🏗 Architecture
 
@@ -105,32 +115,13 @@ Internet ──► ALB ──► Frontend pods
 | **Backend** | Node.js, Express, pg | Node 20, Express 4 |
 | **Database** | PostgreSQL | 16-alpine |
 | **Containers** | Docker (multi-stage builds) | latest |
-| **Orchestration** | Kubernetes on AWS EKS | 1.32 |
+| **Orchestration** | Kubernetes on AWS EKS | 1.34 |
 | **IaC** | Terraform (EKS Auto Mode) | v1.5+ |
 | **CI/CD** | GitHub Actions | — |
 | **Registry** | GitHub Container Registry | ghcr.io |
 | **Ingress** | AWS ALB Controller | v2.11.0 |
 | **Storage** | AWS EBS gp3 (encrypted) | 10Gi |
 | **Autoscaling** | Karpenter (EKS Auto Mode) | — |
----
-
-## 💻 Application
-
-**Jerney** is a full-stack blog platform — create, read, update and delete posts and comments.
-
-### API Endpoints
-
-| Method | Route | Description |
-|---|---|---|
-| `GET` | `/api/health` | Health check — used by K8s probes |
-| `GET` | `/api/posts` | List all posts |
-| `POST` | `/api/posts` | Create a post |
-| `GET` | `/api/posts/:id` | Get single post |
-| `PUT` | `/api/posts/:id` | Update a post |
-| `DELETE` | `/api/posts/:id` | Delete a post |
-| `GET` | `/api/posts/:id/comments` | Get comments |
-| `POST` | `/api/posts/:id/comments` | Add a comment |
-
 ---
 
 ## ☁️ Infrastructure — Terraform
@@ -197,20 +188,6 @@ docker compose up --build
 # Backend  → http://localhost:5000/api/health
 ```
 
----
-
-## ☸️ Kubernetes Manifests
-
-### Apply Order
-
-```bash
-kubectl apply -f k8s/namespace.yaml        # 1. Namespace
-kubectl apply -f k8s/Secrets.yaml          # 2. Secrets
-kubectl apply -f k8s/database/             # 3. DB
-kubectl apply -f k8s/backend/              # 4. Backend
-kubectl apply -f k8s/frontend/             # 5. Frontend + Ingress
-kubectl apply -f k8s/Network-Policies/     # 6. Policies last
-```
 
 ### Key Design Decisions
 
@@ -263,19 +240,6 @@ Security applied at **every layer** — container, network, storage, and IAM.
 
 ---
 
-## ⚙️ CI/CD Pipeline
-
-GitHub Actions automates build → scan → push → deploy on every push to `main`.
-
-```
-Push to main
-     │
-     ▼
-┌──────────┐   ┌──────────────┐   ┌─────────────┐   ┌───────────┐
-│ Build &  │──►│    Docker    │──►│   Trivy     │──►│ Deploy to │
-│  Lint    │   │  Build+Push  │   │ Image Scan  │   │    EKS    │
-└──────────┘   └──────────────┘   └─────────────┘   └───────────┘
-```
 
 Images are tagged with **Git commit SHA** for full traceability and rollback:
 
