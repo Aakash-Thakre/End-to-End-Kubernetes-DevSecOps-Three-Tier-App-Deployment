@@ -135,23 +135,13 @@ VPC (10.0.0.0/16)
 ├── Private Subnets (x3 AZs)  → EKS worker nodes
 └── Single NAT Gateway         → cost-optimised for dev
 
-EKS Cluster (jerney-eks, v1.32)
+EKS Cluster (jerney-eks, v1.34)
 ├── EKS Auto Mode + Karpenter  → intelligent node provisioning
 ├── Node pools: general-purpose + system
 ├── KMS envelope encryption    → secrets encrypted at rest
 ├── Full control plane logging → API, audit, authenticator
 └── OIDC provider              → IRSA pod-level AWS permissions
 ```
-
-```bash
-cd Terraform/
-terraform init
-terraform apply -var-file=terraform.tfvars
-
-# Connect kubectl
-aws eks update-kubeconfig --region us-east-1 --name jerney-eks
-```
-
 ---
 
 ## 🐳 Dockerization
@@ -179,15 +169,6 @@ nginx:1.27-alpine (prod) → serve /dist
                             non-root nginx UID 101
                             EXPOSE 8080
 ```
-
-### Run Locally
-
-```bash
-docker compose up --build
-# Frontend → http://localhost:80
-# Backend  → http://localhost:5000/api/health
-```
-
 
 ### Key Design Decisions
 
@@ -240,7 +221,6 @@ Security applied at **every layer** — container, network, storage, and IAM.
 
 ---
 
-
 Images are tagged with **Git commit SHA** for full traceability and rollback:
 
 ```
@@ -265,7 +245,6 @@ ghcr.io/aakash-thakre/.../jerney-frontend:40df8b2
 
 <div align="center">
 
-Built by [Aakash Thakre](https://github.com/Aakash-Thakre) &nbsp;•&nbsp;
 ![AWS EKS](https://img.shields.io/badge/Deployed_on-AWS_EKS-FF9900?style=flat&logo=amazonaws)
 ![DevSecOps](https://img.shields.io/badge/Practice-DevSecOps-brightgreen?style=flat)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat)
