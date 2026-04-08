@@ -19,18 +19,6 @@
 
 ---
 
-## 📋 Table of Contents
-
-- [Overview](#-overview)
-- [CI/CD Pipeline](#-cicd-pipeline)
-- [Tech Stack](#-tech-stack)
-- [Infrastructure — Terraform](#-infrastructure--terraform)
-- [Dockerization](#-dockerization)
-- [Security](#-security)
-- [Prerequisites](#-prerequisites)
-
----
-
 ## 📖 Overview
 
 This project demonstrates a complete **DevSecOps lifecycle** for the **Jerney Blog Platform** — a three-tier web application. It covers containerizing with Docker, provisioning cloud infrastructure with Terraform, deploying on Kubernetes with production-grade manifests, and automating delivery through GitHub Actions.
