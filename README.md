@@ -25,17 +25,7 @@ This project demonstrates a complete **DevSecOps lifecycle** for the **Jerney Bl
 
 Security is embedded at every layer — non-root containers, read-only filesystems, NetworkPolicies, encrypted EBS storage, and least-privilege IAM.
 
----
-
-### Network Policy Flow
-
-```
-Internet ──► ALB ──► Frontend pods
-                         └──► Backend pods   (port 5000)  ← NetworkPolicy
-                                  └──► Database pods (port 5432)  ← NetworkPolicy
-```
-
-> No direct access to Backend or Database from outside the cluster.
+> Configured Network policies to ensure no direct access to Backend or Database from outside the cluster.
 
 ---
 
@@ -159,21 +149,6 @@ Images are tagged with **Git commit SHA** for full traceability and rollback:
 ghcr.io/aakash-thakre/.../jerney-backend:40df8b2
 ghcr.io/aakash-thakre/.../jerney-frontend:40df8b2
 ```
-
----
-
-## ✅ Prerequisites
-
-| Tool | Version | Purpose |
-|---|---|---|
-| `kubectl` | v1.32+ | Kubernetes CLI |
-| `terraform` | v1.5+ | Infrastructure provisioning |
-| `helm` | v3.x | ALB controller install |
-| `eksctl` | latest | OIDC + IAM service account setup |
-| `aws cli` | v2 | AWS authentication |
-| `docker` | latest | Local builds and Compose |
-
----
 
 <div align="center">
 
