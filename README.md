@@ -29,20 +29,26 @@ The platform leverages ArgoCD to implement a GitOps delivery model, enabling aut
 ---
 
 ## 🛠 Tech Stack
-
-| Layer | Technology | Version |
+| Category | Technology | Version |
 |---|---|---|
-| **Frontend** | React + Vite, Nginx | React 18, Nginx 1.27-alpine |
-| **Backend** | Node.js, Express, pg | Node 20, Express 4 |
-| **Database** | PostgreSQL | 16-alpine |
-| **Containers** | Docker (multi-stage builds) | latest |
-| **Orchestration** | Kubernetes on AWS EKS | 1.34 |
-| **IaC** | Terraform (EKS Auto Mode) | v1.5+ |
-| **CI/CD** | GitHub Actions | — |
-| **Registry** | GitHub Container Registry | ghcr.io |
-| **Ingress** | AWS ALB Controller | v2.11.0 |
-| **Storage** | AWS EBS gp3 (encrypted) | 10Gi |
-| **Autoscaling** | Karpenter (EKS Auto Mode) | — |
+| Frontend | React + Vite, Nginx | React 18, Nginx 1.27-alpine |
+| Backend | Node.js, Express, pg driver | Node 20, Express 4 |
+| Database | PostgreSQL | 16-alpine |
+| Containerization | Docker (multi-stage builds) | — |
+| Orchestration | Kubernetes on AWS EKS | 1.34 |
+| Infrastructure as Code | Terraform | v1.5+ |
+| CI/CD | GitHub Actions | — |
+| GitOps | ArgoCD | — |
+| Container Registry | GitHub Container Registry (ghcr.io) | — |
+| Ingress | AWS ALB Controller | v2.11.0 |
+| Autoscaling | Karpenter via EKS Auto Mode | — |
+| Storage | AWS EBS gp3 (AES-256 encrypted) | 10Gi |
+| Monitoring | Prometheus + Grafana | — |
+| Image Scanning | Trivy | — |
+| IaC Scanning | Checkov | — |
+| Dockerfile Linting | Hadolint | — |
+| Dependency Audit | npm audit | — |
+
 ---
 
 ## ☁️ Infrastructure — Terraform
@@ -148,6 +154,27 @@ Images are tagged with **Git commit SHA** for full traceability and rollback:
 ghcr.io/aakash-thakre/.../jerney-backend:40df8b2
 ghcr.io/aakash-thakre/.../jerney-frontend:40df8b2
 ```
+## GitOps — Git as the Single Source of Truth
+
+ArgoCD continuously reconciles the live cluster state against the Git repository. This means:
+
+- **No manual `kubectl apply`** — every change goes through Git
+- **Automatic drift correction** — out-of-band changes are reverted within seconds
+- **Complete audit trail** — every deployment is a Git commit with an author, timestamp, and diff
+- **Rollback = `git revert`** — no special tooling, no runbooks
+
+The CI pipeline updates the Deployment manifest image tag on every push. ArgoCD picks up that change and rolls the cluster forward. The human commits code. Everything else is automated.
+
+
+## Observability — Know Before Users Do
+
+The cluster doesn't just run — it tells you what it's doing.
+
+**Prometheus** scrapes metrics from across the cluster: CPU, memory, request rates, error rates, pod restarts, node pressure. Alert rules fire before conditions become outages.
+
+**Grafana** turns those metrics into dashboards — cluster health, per-namespace resource utilization, deployment rollout status, and application-level latency at a glance.
+
+Every deployment is a named, SHA-tagged artifact. When something goes wrong, you know exactly which version it is, when it was deployed, and what changed.
 
 <div align="center">
 
