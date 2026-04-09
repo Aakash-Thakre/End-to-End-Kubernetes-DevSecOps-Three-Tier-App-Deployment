@@ -15,7 +15,7 @@
 
 ## ⚙️ CI/CD Pipeline
 
-![Three-Tier Banner](assets/Three-Tier-DevSecOps.gif)
+![Three-Tier Banner](assets/jerney_devsecops_pipeline.gif)
 
 ---
 
